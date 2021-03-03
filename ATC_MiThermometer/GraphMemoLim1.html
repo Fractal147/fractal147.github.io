@@ -341,6 +341,12 @@ function handleDisconnection(event) {
 			catch(error => log(error));
 	}
 }
+function bytesToHex(data) {
+	return new Uint8Array(data).reduce(function(memo, i) {
+		return memo + ("0" + i.toString(16)).slice(-2);
+	}, "");
+}	
+	
 // Подключение к определенному устройству, получение сервиса и характеристики
 function connectDeviceAndCacheCharacteristic(device) {
   if (device.gatt.connected && characteristicVTH && characteristicVTH) {
