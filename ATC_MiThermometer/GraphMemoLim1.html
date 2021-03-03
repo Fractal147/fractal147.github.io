@@ -419,7 +419,7 @@ function connectDeviceAndCacheCharacteristic(device) {
 			console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
 			characteristicVTH.writeValue(blk).then(_ => {
 				console.log('Send cmd GetMemo ok');
-			}
+			});
 			//return 
 			
 			//settingsCharacteristics.writeValue(blk).then(_ => {
