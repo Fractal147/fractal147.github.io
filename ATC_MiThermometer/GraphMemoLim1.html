@@ -404,8 +404,21 @@ function connectDeviceAndCacheCharacteristic(device) {
 			DevConnected();
 			memo = new Array();
 			datau = new Array();
-			log('Send command get-memo (0..19632 samples)...');
-			return characteristicVTH.writeValue(new Uint8Array([0x35,0xB0,0x4C,0,0]));
+			log('Send command get-memo (0..'+dec(cnt_req)+' samples)...');
+			
+			let count = cnt_req & 0x7fff; //Makes it a uint
+			let start = 0;
+			if(count > 19632) count = 19632; //limits it to sane numbers
+			if(start < 0) start = 0;
+			else if(start >= count) start = count - 1;
+			blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
+			//addClog("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
+			//settingsCharacteristics.writeValue(blk).then(_ => {
+			//	flg_memo_act = true;
+			//	addAlog('Send cmd GetMemo ok');
+			//});
+			//[0x35,0xB0,0x4C,0,0]
+			return characteristicVTH.writeValue(blk);
 		});
 	});
 }
