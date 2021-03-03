@@ -1484,6 +1484,7 @@ function CustomConfig() {
 		if(cfg.ver >= 0x23) 
 			is += '<button type="button" onclick="sendCustomSetting(&quot;361234&quot;);">!Delete all records!</button> '
 		is += '<a href="GraphMemo.html">GraphMemo.html</a> <button type="button" onclick="setDevTime();">Set Time</button> <button type="button" onclick="sendGetMemo(50);">Get the last 50 records</button><br><br>';
+		is += 'Records <input size="3" title="-1 for all, else int" id="memo_cnt_n" maxlength="5" value="25"><button type="button" onclick="sendGetMemoN();">Get the last N records</button> <br><br>';
 	}
 	is += '<button type="button" onclick="SendCustomConfig()">Send Config</button>';
 	is += ' <button type="button" onclick="sendCustomSetting(&quot;56&quot;);">Set default</button>';
