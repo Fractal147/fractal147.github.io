@@ -417,12 +417,18 @@ function connectDeviceAndCacheCharacteristic(device) {
 			else if(start >= count) start = count - 1;
 			blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
 			console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
+			characteristicVTH.writeValue(blk).then(_ => {
+				console.log('Send cmd GetMemo ok');
+			}
+			//return 
+			
 			//settingsCharacteristics.writeValue(blk).then(_ => {
 			//	flg_memo_act = true;
 			//	addAlog('Send cmd GetMemo ok');
 			//});
 			//[0x35,0xB0,0x4C,0,0]
-			return characteristicVTH.writeValue(blk);
+			//return characteristicVTH.writeValue(blk);
+			//return 
 		});
 	});
 }
