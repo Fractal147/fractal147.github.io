@@ -413,7 +413,7 @@ function connectDeviceAndCacheCharacteristic(device) {
 			if(start < 0) start = 0;
 			else if(start >= count) start = count - 1;
 			blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
-			addClog("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
+			console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
 			//settingsCharacteristics.writeValue(blk).then(_ => {
 			//	flg_memo_act = true;
 			//	addAlog('Send cmd GetMemo ok');
