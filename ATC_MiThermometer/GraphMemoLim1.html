@@ -417,7 +417,7 @@ function connectDeviceAndCacheCharacteristic(device) {
 			else if(start >= count) start = count - 1;
 			blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
 			console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
-			characteristicVTH.writeValue(blk).then(_ => {
+			return characteristicVTH.writeValue(blk).then(_ => {
 				console.log('Send cmd GetMemo ok');
 			});
 			//return 
