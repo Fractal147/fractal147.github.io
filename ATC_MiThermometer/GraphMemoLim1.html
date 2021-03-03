@@ -406,7 +406,7 @@ function connectDeviceAndCacheCharacteristic(device) {
 			datau = new Array();
 			
 			
-			let count = (parseInt($("cnt_req").value) & 0x7fff; //Makes it a uint
+			let count = (parseInt($("cnt_req").value) & 0x7fff); //Makes it a uint
 			log('Send command get-memo (0..'+count+' samples)...');
 			let start = 0;
 			if(count > 19632) count = 19632; //limits it to sane numbers
