@@ -1414,6 +1414,21 @@ function sendGetMemo(cnt) {
 		addAlog('Send cmd GetMemo ok');
 	});
 }
+//memo_cnt_n
+function sendGetMemoN() {  
+	let count = (parseInt($("memo_cnt_n").value)) & 0x7fff;
+	let start = 0;
+	if(count > 19632) count = 19632;
+	if(start < 0) start = 0;
+	else if(start >= count) start = count - 1;
+	blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
+	addClog("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
+	settingsCharacteristics.writeValue(blk).then(_ => {
+		flg_memo_act = true;
+		addAlog('Send cmd GetMemo ok');
+	});
+}
+	
 function CustomConfig() {
   let is = '';
   if(otafiles.loaded && fwname == '') {
@@ -1462,6 +1477,7 @@ function CustomConfig() {
 	if(cfg.ver == 0x19) {
 		is += 'Recording measurements to flash memory <input type="checkbox" id="cfg_flg2_memo" title="Recording measurements to flash memory (cyclic buffer for 19632 measurements)">';
 		is += ' <button type="button" onclick="sendGetMemo(50);">Get the last 50 records</button> <a href="GraphMemo.html">GraphMemo.html</a><br><br>';
+		is += ' Records <input size="3" title="-1 for all, else int" id="memo_cnt_n" maxlength="5" value="25"><button type="button" onclick="sendGetMemoN();">Get the last N records</button> <br><br>';
 	}
 	if(cfg.ver >= 0x20) {
 		is += 'Recording averaging measurements to flash memory <input size="5" title="0..255, =0 - off, default 60. Set time/date!" id="cfg_av_meas_mem" maxlength="3" value="60"> x(measure interval)<br>';
