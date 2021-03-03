@@ -368,7 +368,9 @@ function connectDeviceAndCacheCharacteristic(device) {
 			characteristicVTH.addEventListener('characteristicvaluechanged', event => {
 				var value = event.target.value;
 				let len = value.byteLength;
-				console.log("Got: ("+dump(value, value.byteLength)+")");
+				let blkid = value.getUint8(0);
+				console.log('Got id: 0x'+hex(blkid,2)+' ['+bytesToHex(value.buffer.slice(1))+']');
+				//console.log("Got: ("+dump(value, value.byteLength)+")");
 				if(value.getUint8(0) == 0x35) {
 					if(len >= 13) {
 						let cnt = value.getUint16(1, true);
