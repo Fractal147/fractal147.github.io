@@ -414,11 +414,9 @@ function connectDeviceAndCacheCharacteristic(device) {
 			});
 			DevConnected();
 			console.log("Read Characteristics (0x1f1f)");
-			characteristicVTH.readValue()
-				.then(value => {
+			characteristicVTH.readValue().then(value => {
 				memo = new Array();
 				datau = new Array();
-
 
 				let count = (parseInt($("cnt_req").value) & 0x7fff); //Makes it a uint
 				log('Send command get-memo (0..'+count+' samples)...');
@@ -427,10 +425,13 @@ function connectDeviceAndCacheCharacteristic(device) {
 				if(start < 0) start = 0;
 				else if(start >= count) start = count - 1;
 				blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
-				console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
-				characteristicVTH.writeValue(blk).then(_ => {
-					console.log('Send cmd GetMemo ok');
-				});
+				console.log("Start 2s delay");
+				setTimeout(() => {  
+					console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
+					characteristicVTH.writeValue(blk).then(_ => {
+						console.log('Send cmd GetMemo ok');
+					});
+				}, 2000);
 			});
 			
 			//return 
