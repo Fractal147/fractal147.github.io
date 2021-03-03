@@ -405,24 +405,24 @@ function connectDeviceAndCacheCharacteristic(device) {
 				}
 			});
 			DevConnected();
-			characteristicVTH.writeValue(new Uint8Array([0x01])).then(_ => {
-				console.log('Send get name OK');
-			});
-			
-			memo = new Array();
-			datau = new Array();
-			
-			
-			let count = (parseInt($("cnt_req").value) & 0x7fff); //Makes it a uint
-			log('Send command get-memo (0..'+count+' samples)...');
-			let start = 0;
-			if(count > 19632) count = 19632; //limits it to sane numbers
-			if(start < 0) start = 0;
-			else if(start >= count) start = count - 1;
-			blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
-			console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
-			return characteristicVTH.writeValue(blk).then(_ => {
-				console.log('Send cmd GetMemo ok');
+			console.log("Read Characteristics (0x1f1f)");
+			settingsCharacteristics.readValue()
+				.then(value => {
+				memo = new Array();
+				datau = new Array();
+
+
+				let count = (parseInt($("cnt_req").value) & 0x7fff); //Makes it a uint
+				log('Send command get-memo (0..'+count+' samples)...');
+				let start = 0;
+				if(count > 19632) count = 19632; //limits it to sane numbers
+				if(start < 0) start = 0;
+				else if(start >= count) start = count - 1;
+				blk = new Uint8Array([0x35, count&0xff, (count>>8)&0xff,start&0xff,(start>>8)&0xff]);
+				console.log("Send cmd GetMemo: ("+dump(blk, blk.length)+")...");
+				return characteristicVTH.writeValue(blk).then(_ => {
+					console.log('Send cmd GetMemo ok');
+				});
 			});
 			//return 
 			
