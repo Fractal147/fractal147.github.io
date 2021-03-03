@@ -405,7 +405,7 @@ function connectDeviceAndCacheCharacteristic(device) {
 				}
 			});
 			DevConnected();
-			characteristicVTH.writeValue(new Uint8Array([0x01]).then(_ => {
+			characteristicVTH.writeValue(new Uint8Array([0x01])).then(_ => {
 				console.log('Send get name OK');
 			});
 			
