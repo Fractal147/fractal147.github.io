@@ -132,7 +132,9 @@
 		<input type="button" id="butSave" value="Save data.csv">
 		Set device time<input type="checkbox" id="setDevTime" checked>
 		Hide old dates<input type="checkbox" id="hideLoDate" checked>
-		Vbat<input type="checkbox" id="thvbat"><br>
+		Vbat<input type="checkbox" id="thvbat">
+		AbsH<input type="checkbox" id="thabsh">
+		<br>
 		<span id='info'>?</span>
 	<div id='labdiv' style=></div>
 	</div>
@@ -176,6 +178,26 @@ function ShowGrfTH() {
 			colors: ['green', 'blue'],
 			series : { 'H(%)': { axis: 'y2' } },
 			labels: ['Date', 'T(°C)', 'H(%)'],
+			labelsDiv: $('labdiv'),
+			legend: 'always',  // "follow"
+			digitsAfterDecimal: 3,
+		});
+}
+function ShowGrfTabsH() {
+	gu = new Dygraph(
+		$("div_v"),
+	    datau,
+		{
+			title: 'Memo Temperature and Absolute Humidity',
+			showRangeSelector: true,
+			showRoller: true,
+			rollPeriod: 0,
+			xlabel: 'Date',
+			ylabel: 'Temp(C&deg;)',
+			y2label: 'AbsH(g/m3)',
+			colors: ['green', 'blue'],
+			series : { 'AbsH(g/m3)': { axis: 'y2' } },
+			labels: ['Date', 'T(°C)', 'AbsH(g/m3)'],
 			labelsDiv: $('labdiv'),
 			legend: 'always',  // "follow"
 			digitsAfterDecimal: 3,
@@ -280,6 +302,18 @@ function show_graph() {
 				if(b[0] > 1609459200 && b[0] < 2255486400) datau.push([new Date(b[0]*1000.0+localOffset), b[3]/1000.0]); 
 			} else datau.push([new Date(b[0]*1000.0+localOffset), b[3]/1000.0]); 
 			return a+1;}, 1 );
+		} else if($('thabsh').checked) {
+			//deal with the absolute humidity translation
+			memo.reduceRight(function(a, b)	{ 
+				temperat =  b[1];
+				relh = b[2];
+				absh = (6.112 * Math.exp( (17.67* temperat) / (temperat +243.5) ) * relh*18.02 ) /  ( (273.15+temperat)*100*0.08314)
+				
+				if(hideldate) {
+					if(b[0] > 1609459200 && b[0] < 2255486400) datau.push([new Date(b[0]*1000.0+localOffset), b[1], absh]); 
+				} else datau.push([new Date(b[0]*1000.0+localOffset), b[1], absh]);
+				return a+1;
+			}, 1 );
 		} else {
 			memo.reduceRight(function(a, b)	{ 
 			if(hideldate) {
@@ -290,6 +324,7 @@ function show_graph() {
 		log('Load '+ datau.length + ' samples.')
 		if(datau.length > 1) {
 			if($('thvbat').checked) ShowGrfU();
+			else if($('thabsh').checked) ShowGrfTabsH();
 			else ShowGrfTH();
 			log('Load '+ datau.length + ' samples.')
 		} else log('No samples!')
@@ -297,6 +332,7 @@ function show_graph() {
 }
 $('hideLoDate').onchange = function() {show_graph();};
 $('thvbat').onchange = function() {show_graph();};
+$('thabsh').onchange = function() {show_graph();};
 //--BLE---------------------------------------
 // Кэш объекта выбранного устройства
 let deviceCache = null;
