@@ -307,7 +307,7 @@ function show_graph() {
 			memo.reduceRight(function(a, b)	{ 
 				temperat =  b[1];
 				relh = b[2];
-				absh = (6.112 * Math.exp( (17.67* temperat) / (temperat +243.5) ) * relh*18.02 ) /  ( (273.15+temperat)*100*0.08314)
+				absh = (6.112 * Math.exp( (17.67 * temperat) / (temperat + 243.5) ) * relh * 2.1674 ) /  (273.15 + temperat)
 				
 				if(hideldate) {
 					if(b[0] > 1609459200 && b[0] < 2255486400) datau.push([new Date(b[0]*1000.0+localOffset), b[1], absh]); 
