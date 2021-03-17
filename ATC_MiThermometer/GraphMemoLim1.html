@@ -307,8 +307,8 @@ function show_graph() {
 			memo.reduceRight(function(a, b)	{ 
 				temperat =  b[1];
 				relh = b[2];
-				absh = (6.112 * Math.exp( (17.67 * temperat) / (temperat + 243.5) ) * relh * 2.1674 ) /  (273.15 + temperat)
-				
+				absh = 216.7*(relh/100.0*6.112*exp(17.62*temperat/(243.12+temperat))/(273.15+temperat))
+				// from https://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/2_Humidity_Sensors/Application_Note/Sensirion_AppNotes_Humidity_Sensors_at_a_Glance.pdf
 				if(hideldate) {
 					if(b[0] > 1609459200 && b[0] < 2255486400) datau.push([new Date(b[0]*1000.0+localOffset), b[1], absh]); 
 				} else datau.push([new Date(b[0]*1000.0+localOffset), b[1], absh]);
